@@ -2,21 +2,34 @@ services:
   mongodb:
     image: mongodb:1
     container_name: mongodb
+
   redis:
     image: redis
+
   mysql:
     image: mysql:1
     container_name: mysql
+
+  rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=roboshop
+      - RABBITMQ_DEFAULT_PASS=roboshop123
+
   catalogue:
     image: catalogue:1
     container_name: catalogue
     depends_on:
       - mongodb
+  
   user:
     image: user:1
     container_name: user
     depends_on:
       - mongodb
+      - redis
+  
   web:
     image: web:1
     container_name: web
