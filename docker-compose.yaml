@@ -5,6 +5,7 @@ services:
 
   redis:
     image: redis
+    container_name: redis
 
   mysql:
     image: mysql:1
@@ -29,6 +30,28 @@ services:
     depends_on:
       - mongodb
       - redis
+
+  cart:
+    image: cart:1
+    container_name: cart
+    depends_on:
+      - redis
+      - catalogue
+
+  shipping:
+    image: shipping:1
+    container_name: shipping
+    depends_on:
+      - mysql
+      - cart
+
+  payment:
+    image: payment:1
+    container_name: payment
+    depends_on:
+      - rabbitmq
+      - user
+      - cart
   
   web:
     image: web:1
@@ -37,7 +60,14 @@ services:
       - "80:80"
     depends_on:
       - mongodb
+      - redis
+      - mysql
+      - rabbitmq
       - catalogue
+      - user
+      - cart
+      - shipping
+      - payment
 
 networks:
   default:
