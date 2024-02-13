@@ -2,8 +2,8 @@ FROM maven As build
 WORKDIR /opt/shipping
 COPY pom.xml /opt/shipping
 RUN mvn dependency:resolve
-RUN mvn package
 COPY src /opt/shipping/src/
+RUN mvn package
 
 
 FROM openjdk:8-jdk
